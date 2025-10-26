@@ -1,0 +1,109 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Gotham';
+
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #EB0029;
+
+}
+h1{
+    margin-bottom: 10px;
+    color: #323E48;
+}
+
+#contenedores-padres{
+    background-color: white;
+    width: 500px;
+    border-radius: 6px;
+    padding: 50px;
+    height: 100vh;
+}
+.wrapper{
+    background-color: white;
+    color: #323E48;
+    
+    
+}
+input[type="text"] {
+    height: 50px;
+    padding: 0 40px 0 15px;
+    margin-bottom: 10px;
+    border: 1px solid #D1D5DB;
+    font-weight: 600;
+    border-bottom: black;
+    color: #5B6670;
+    border-radius: 6px;
+    background-color: #F6F6F6;
+    transition: border-color 0.3s ease;
+    width: 100%;
+}
+
+input[type="text"]:focus {
+    border-color: #E2001A;
+    box-shadow: 0 0 0 1px #E2001A;
+}
+input[type="text"] {
+    height: 50px;
+    padding: 0 40px 0 15px;
+    margin-bottom: 10px;
+    border: 1px solid #D1D5DB;
+    font-weight: 600;
+    border-bottom: black;
+    color: #5B6670;
+    border-radius: 6px;
+    background-color: #F6F6F6;
+    transition: border-color 0.3s ease;
+    width: 100%;
+}
+
+input[type="text"]:focus {
+    border-color: #E2001A;
+    box-shadow: 0 0 0 1px #E2001A;
+}
+.password {
+    height: 50px;
+    padding: 0 40px 0 15px;
+    margin-bottom: 10px;
+    border: 1px solid #D1D5DB;
+    font-weight: 600;
+    border-bottom: black;
+    color: #5B6670;
+    border-radius: 6px;
+    background-color: #F6F6F6;
+    transition: border-color 0.3s ease;
+    width: 100%;
+}
+
+.password:focus {
+    border-color: #E2001A;
+    box-shadow: 0 0 0 1px #E2001A;
+}
+
+.btn-primary {
+    background: #EB0029;
+    color: #fff;
+    border: 2px solid #EB0029;
+    height: 44px;
+    padding: 0 22px;
+    font-weight: 600;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.btn-primary:hover {
+    transition:0.7s;
+    background: #DB0026;
+    border-color: #DB0026;
+}
