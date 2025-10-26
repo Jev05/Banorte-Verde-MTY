@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escáner QR</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+    #my-qr-reader {
+      margin: 20px auto;
+    }
+    #you-qr-result {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+      min-height: 30px;
+    }
+    #form-datos {
+      display: none;
+      margin-top: 20px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Escanear Código QR</h1>
+
+  <div id="you-qr-result"></div>
+  <div id="my-qr-reader" style="width: 500px; margin: 0 auto;"></div>
+
+  <div id="form-datos">
+    <h3>Agregar cantidad de botellas</h3>
+    <input type="number" id="cantidad" placeholder="Cantidad de botellas" min="1" required>
+    <button id="enviar">Enviar</button>
+    <p id="mensaje"></p>
+  </div>
+
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script>
+    function domReady(fn) {
+      if (document.readyState === "complete" || document.readyState === "interactive") {
+        setTimeout(fn, 1);
+      } else {
+        document.addEventListener("DOMContentLoaded", fn);
+      }
+    }
+
+    domReady(function() {
+      var myqr = document.getElementById('you-qr-result');
+      var form = document.getElementById('form-datos');
+      var cantidadInput = document.getElementById('cantidad');
+      var enviarBtn = document.getElementById('enviar');
+      var mensaje = document.getElementById('mensaje');
+
+      var correoDesencriptado = "";
+      var lastResult, countResults = 0;
+
+      function onScanSuccess(decodeText, decodeResult) {
+        if (decodeText !== lastResult) {
+          ++countResults;
+          lastResult = decodeText;
+
+          try {
+            correoDesencriptado = atob(decodeText);
+          } catch (e) {
+            alert("El código QR no contiene un correo válido en Base64.");
+            return;
+          }
+
+          alert("Correo detectado: " + correoDesencriptado);
+          myqr.innerHTML = `Correo escaneado: <b>${correoDesencriptado}</b>`;
+          form.style.display = 'block';
+        }
+      }
+
+      var htmlscanner = new Html5QrcodeScanner("my-qr-reader", {
+        fps: 10,
+        qrbox: 250
+      });
+      htmlscanner.render(onScanSuccess);
+
+      enviarBtn.addEventListener('click', function() {
+        var cantidad = cantidadInput.value.trim();
+        if (!cantidad || cantidad <= 0) {
+          mensaje.textContent = "Ingresa una cantidad válida.";
+          mensaje.style.color = "red";
+          return;
+        }
+
+        mensaje.textContent = "Enviando...";
+        mensaje.style.color = "blue";
+
+        console.log('Enviando datos:', {
+          correo: correoDesencriptado,
+          cantidad: cantidad
+        });
+
+        fetch("insertar_botellas.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            correo: correoDesencriptado,
+            cantidad: parseInt(cantidad)
+          })
+        })
+        .then(res => {
+          console.log('Status:', res.status);
+          if (!res.ok) {
+            throw new Error('HTTP error! status: ' + res.status);
+          }
+          return res.text();
+        })
+        .then(text => {
+          console.log('Response text:', text);
+          try {
+            const data = JSON.parse(text);
+            console.log('Response JSON:', data);
+            
+            if (data.success) {
+              mensaje.textContent = data.message;
+              mensaje.style.color = "green";
+              cantidadInput.value = "";
+            } else {
+              mensaje.textContent = "Error: " + data.message;
+              mensaje.style.color = "red";
+            }
+          } catch (e) {
+            console.error('Error parsing JSON:', e);
+            mensaje.textContent = "Error: Respuesta inválida del servidor";
+            mensaje.style.color = "red";
+          }
+        })
+        .catch(err => {
+          console.error("Error completo:", err);
+          mensaje.textContent = "Error de conexión: " + err.message;
+          mensaje.style.color = "red";
+        });
+      });
+    });
+  </script>
+</body>
+</html>

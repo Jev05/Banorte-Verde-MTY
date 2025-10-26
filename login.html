@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles/login.css">
+
+</head>
+
+<body>
+
+    <img src="LogoBanorte.png" width="600" height="90" style="display: block; margin: 15px auto;">
+    <div id="contenedores-padres" class="papa1">
+
+        <form action="php/login.php" method="POST">
+            <h1>Login</h1>
+            <div class="contenedor-input">
+                <input type="text" name="usuario_html" placeholder="Usuario" class="usuario" required>
+
+            </div>
+            <div class="contenedor-input">
+                <input type="password" name="contrasena_html" placeholder="Contraseña" class="password" required>
+
+            </div>
+            <div class="forgor">
+                <label><input type="checkbox" name="">Recuerdame</label>
+                <div style="margin: 10px;">
+                    <a href="http://">¿Se te olvido tu contraseña?</a>
+                </div>
+
+            </div>
+            <button class="btn-primary">Iniciar Sesion</button>
+            <div class="registrar-link">
+                <p>No tienes cuenta
+                    <a href="">Registrate aqui</a>
+                </p>
+            </div>
+        </form>
+    </div>
+    
+</body>
+
+</html>
